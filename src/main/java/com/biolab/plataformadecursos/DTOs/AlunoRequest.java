@@ -13,5 +13,6 @@ public class AlunoRequest {
     private String nome;
     @NotBlank
     private String email;
+    private long idCurso;
 
 }
