@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("aluno")
 public class AlunoController {
     private final AlunoService alunoService;
 
@@ -16,13 +18,19 @@ public class AlunoController {
 
 
     @PostMapping
-    public ResponseEntity<?> criarAluno(@Valid @RequestBody AlunoRequest alunoRequest) {
+    public ResponseEntity<?> criarAluno(@RequestBody AlunoRequest alunoRequest) {
         return ResponseEntity.ok("Criado com sucesso!" + alunoService.criarAluno(alunoRequest));
     }
 
     @GetMapping
     public ResponseEntity<?> mostrarAluno() {
         return ResponseEntity.ok(alunoService.mostrarAlunos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AlunoResponse> buscarID(@PathVariable Long id){
+        AlunoResponse aluno = alunoService.buscarID(id);
+        return ResponseEntity.ok(aluno);
     }
 
     @DeleteMapping

@@ -1,11 +1,15 @@
 package com.biolab.plataformadecursos.controllers;
 
+import com.biolab.plataformadecursos.DTOs.AlunoResponse;
 import com.biolab.plataformadecursos.DTOs.CursoRequest;
+import com.biolab.plataformadecursos.DTOs.CursoResponse;
 import com.biolab.plataformadecursos.services.CursoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("curso")
 public class CursoController {
     private final CursoService cursoService;
 
@@ -23,6 +27,12 @@ public class CursoController {
     @GetMapping
     public ResponseEntity<?> mostrarCurso() {
         return ResponseEntity.ok(cursoService.mostrarCurso());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CursoResponse> buscarID(@PathVariable Long id){
+        CursoResponse curso = cursoService.buscarID(id);
+        return ResponseEntity.ok(curso);
     }
 
     @DeleteMapping("/{id}")
