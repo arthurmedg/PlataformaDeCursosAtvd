@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MatriculaService {
@@ -93,8 +95,12 @@ public class MatriculaService {
             return new ArrayList<>();
         }
 
-        return cursoOpt.get().getAlunos().stream()
-                .map(aluno -> new AlunoResponse(aluno.getId(), aluno.getNome(), aluno.getEmail()))
-                .toList();
+        return cursoOpt.get().getAlunos().stream().map(aluno -> {
+            Set<CursoResponse> cursosDto = aluno.getCursos().stream()
+                    .map(c -> new CursoResponse(c.getId(), c.getNome(), c.getCargaHoraria()))
+                    .collect(Collectors.toSet());
+
+            return new AlunoResponse(aluno.getId(), aluno.getNome(), aluno.getEmail(), cursosDto);
+        }).toList();
     }
 }
