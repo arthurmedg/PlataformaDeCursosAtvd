@@ -2,6 +2,8 @@ package com.biolab.plataformadecursos.services;
 
 import com.biolab.plataformadecursos.DTOs.AlunoRequest;
 import com.biolab.plataformadecursos.DTOs.AlunoResponse;
+import com.biolab.plataformadecursos.DTOs.CursoRequest;
+import com.biolab.plataformadecursos.DTOs.CursoResponse;
 import com.biolab.plataformadecursos.entities.Aluno;
 import com.biolab.plataformadecursos.entities.Curso;
 import com.biolab.plataformadecursos.repositories.AlunoRepository;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AlunoService {
@@ -36,36 +40,45 @@ public class AlunoService {
     }
 
     //  GET
-    public List<AlunoResponse> mostrarAlunos(){
-        return alunoRepository.findAll().stream().map(
-                aluno -> new AlunoResponse(
-                        aluno.getId(), aluno.getNome(), aluno.getEmail())).toList();
+    public List<AlunoResponse> mostrarAlunos() {
+        return alunoRepository.findAll().stream().map(aluno -> {
+            Set<CursoResponse> cursosDto = aluno.getCursos().stream()
+                    .map(c -> new CursoResponse(c.getId(), c.getNome(), c.getCargaHoraria()))
+                    .collect(Collectors.toSet());
+
+            return new AlunoResponse(aluno.getId(), aluno.getNome(), aluno.getEmail(), cursosDto);
+        }).toList();
     }
 
-    public AlunoResponse buscarID(long id){
-        Optional<Aluno> aluno = alunoRepository.findById(id);
-        AlunoResponse alunoResponse = new AlunoResponse();
-        alunoResponse.setId(aluno.get().getId());
-        alunoResponse.setNome(aluno.get().getNome());
-        alunoResponse.setEmail(aluno.get().getEmail());
+    public AlunoResponse buscarID(long id) {
+        Optional<Aluno> alunoOpt = alunoRepository.findById(id);
+        if (alunoOpt.isEmpty()) {
+            return null;
+        }
 
-        return alunoResponse;
+        Aluno aluno = alunoOpt.get();
+        Set<CursoResponse> cursosDto = aluno.getCursos().stream()
+                .map(c -> new CursoResponse(c.getId(), c.getNome(), c.getCargaHoraria()))
+                .collect(Collectors.toSet());
+
+        return new AlunoResponse(aluno.getId(), aluno.getNome(), aluno.getEmail(), cursosDto);
     }
 
 
     //  PUT
     public String alterarAluno(long id, AlunoRequest request) {
-        Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Erro: Aluno não foi encontrado no sistema!"));
-        Curso curso = cursoRepository.getReferenceById(request.getIdCurso());
+        Optional<Aluno> alunoOpt = alunoRepository.findById(id);
+        if (alunoOpt.isEmpty()) {
+            return "Erro: Aluno não foi encontrado no sistema!";
+        }
+
+        Aluno aluno = alunoOpt.get();
         aluno.setNome(request.getNome());
         aluno.setEmail(request.getEmail());
-        aluno.setCursos(new HashSet<>());
-        aluno.getCursos().add(curso);
 
         alunoRepository.save(aluno);
         return "Aluno editado com sucesso!";
     }
-
 
     //  DELETE
     public String deletarAluno(long id) {
