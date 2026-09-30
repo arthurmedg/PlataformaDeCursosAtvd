@@ -5,8 +5,7 @@ import com.biolab.plataformadecursos.DTOs.AlunoResponse;
 import com.biolab.plataformadecursos.services.AlunoService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 public class AlunoController {
     private final AlunoService alunoService;
@@ -19,5 +18,20 @@ public class AlunoController {
     @PostMapping
     public ResponseEntity<?> criarAluno(@Valid @RequestBody AlunoRequest alunoRequest) {
         return ResponseEntity.ok("Criado com sucesso!" + alunoService.criarAluno(alunoRequest));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> mostrarAluno() {
+        return ResponseEntity.ok(alunoService.mostrarAlunos());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deletarAluno(@PathVariable Long id){
+        return ResponseEntity.ok(alunoService.deletarAluno(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> alterarAluno(@Valid @PathVariable("id") long id, @RequestBody AlunoRequest alunoRequest){
+        return ResponseEntity.ok(alunoService.alterarAluno(id, alunoRequest));
     }
 }
