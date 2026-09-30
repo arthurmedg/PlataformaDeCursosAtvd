@@ -85,10 +85,10 @@ public class AlunoService {
         Optional<Aluno> aluno = alunoRepository.findById(id);
 
         if (aluno.isEmpty()) {
-            return "A aluno não existe";
+            return "O(A) aluno(a) não existe";
         }else {
             alunoRepository.deleteById(id);
-            return "Aluno removida com sucesso!";
+            return "Aluno(a) removido(a) com sucesso!";
         }
     }
 
