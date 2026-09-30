@@ -20,7 +20,7 @@ public class CursoController {
 
 
     @PostMapping
-    public ResponseEntity<?> criarCurso(@Valid @RequestBody CursoRequest cursoRequest) {
+    public ResponseEntity<?> criarCurso(@RequestBody CursoRequest cursoRequest) {
             return ResponseEntity.ok("Criado com sucesso!" + cursoService.criarCurso(cursoRequest));
     }
 
