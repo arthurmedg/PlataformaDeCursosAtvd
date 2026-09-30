@@ -8,7 +8,6 @@ import com.biolab.plataformadecursos.repositories.AlunoRepository;
 import com.biolab.plataformadecursos.repositories.CursoRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +36,6 @@ public class AlunoService {
     }
 
     //  GET
-
     public List<AlunoResponse> mostrarAlunos(){
         return alunoRepository.findAll().stream().map(
                 aluno -> new AlunoResponse(
