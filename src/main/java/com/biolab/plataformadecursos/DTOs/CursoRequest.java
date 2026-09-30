@@ -12,6 +12,11 @@ public class CursoRequest {
     @NotBlank
     private String nome;
     @NotBlank
-    private String CargaHoraria;
+    private String cargaHoraria;
     private Set<AlunoRequest> aluno;
+
+    public CursoRequest(String nome, String cargaHoraria) {
+        this.nome = nome;
+        this.cargaHoraria = cargaHoraria;
+    }
 }

@@ -16,6 +16,9 @@ public class AlunoRequest {
     @NotBlank
     private String email;
     private long idCurso;
-    private Set<CursoRequest> curso;
 
+    public AlunoRequest(String nome, String email) {
+        this.nome = nome;
+        this.email = email;
+    }
 }
