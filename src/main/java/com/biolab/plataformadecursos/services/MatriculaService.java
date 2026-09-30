@@ -103,4 +103,31 @@ public class MatriculaService {
             return new AlunoResponse(aluno.getId(), aluno.getNome(), aluno.getEmail(), cursosDto);
         }).toList();
     }
+
+//    PUT matricula aluno
+    public String atualizarMatricula(long alunoId, long cursoAntigoId, long cursoNovoId) {
+        Aluno aluno = alunoRepository.findById(alunoId)
+                .orElseThrow(() -> new RuntimeException("Erro: Aluno não encontrado!"));
+
+        Curso cursoAntigo = cursoRepository.findById(cursoAntigoId)
+                .orElseThrow(() -> new RuntimeException("Erro: Curso antigo não encontrado!"));
+
+        Curso cursoNovo = cursoRepository.findById(cursoNovoId)
+                .orElseThrow(() -> new RuntimeException("Erro: Curso novo não encontrado!"));
+
+
+        if (!aluno.getCursos().contains(cursoAntigo)) {
+            return "Erro: O aluno não está matriculado no curso antigo!";
+        }
+
+        if (aluno.getCursos().contains(cursoNovo)) {
+            return "Erro: O aluno já está matriculado no curso novo!";
+        }
+
+        aluno.getCursos().remove(cursoAntigo);
+        aluno.getCursos().add(cursoNovo);
+
+        alunoRepository.save(aluno);
+        return "Matrícula atualizada com sucesso! Curso alterado.";
+    }
 }
