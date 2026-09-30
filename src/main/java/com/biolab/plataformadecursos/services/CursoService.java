@@ -1,10 +1,7 @@
 package com.biolab.plataformadecursos.services;
 
-import com.biolab.plataformadecursos.DTOs.AlunoRequest;
-import com.biolab.plataformadecursos.DTOs.AlunoResponse;
 import com.biolab.plataformadecursos.DTOs.CursoRequest;
 import com.biolab.plataformadecursos.DTOs.CursoResponse;
-import com.biolab.plataformadecursos.entities.Aluno;
 import com.biolab.plataformadecursos.entities.Curso;
 import com.biolab.plataformadecursos.repositories.AlunoRepository;
 import com.biolab.plataformadecursos.repositories.CursoRepository;
