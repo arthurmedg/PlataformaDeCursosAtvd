@@ -1,9 +1,9 @@
 package com.biolab.plataformadecursos.DTOs;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -13,4 +13,5 @@ public class CursoRequest {
     private String nome;
     @NotBlank
     private String CargaHoraria;
+    private Set<AlunoRequest> aluno;
 }
