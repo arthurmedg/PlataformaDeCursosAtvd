@@ -25,8 +25,8 @@ public class CursoService {
     //    POST
     public String criarCurso(CursoRequest request) {
         Curso curso = new Curso();
-        curso.setNome(curso.getNome());
-        curso.setCargaHoraria(curso.getCargaHoraria());
+        curso.setNome(request.getNome());
+        curso.setCargaHoraria(request.getCargaHoraria());
 
         cursoRepository.save(curso);
         return "Curso Cadastrado com Sucesso!";
