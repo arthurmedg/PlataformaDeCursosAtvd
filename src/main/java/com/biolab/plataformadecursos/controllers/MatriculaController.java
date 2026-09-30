@@ -37,4 +37,12 @@ public class MatriculaController {
     public ResponseEntity<List<AlunoResponse>> buscarAlunosDoCurso(@PathVariable long cursoId) {
         return ResponseEntity.ok(matriculaService.buscarAlunosDoCurso(cursoId));
     }
+
+    @PutMapping("/aluno/{alunoId}/curso-antigo/{cursoAntigoId}/curso-novo/{cursoNovoId}")
+    public ResponseEntity<String> atualizarMatricula(
+            @PathVariable long alunoId,
+            @PathVariable long cursoAntigoId,
+            @PathVariable long cursoNovoId) {
+        return ResponseEntity.ok(matriculaService.atualizarMatricula(alunoId, cursoAntigoId, cursoNovoId));
+    }
 }
