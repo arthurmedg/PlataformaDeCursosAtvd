@@ -8,7 +8,9 @@ import com.biolab.plataformadecursos.repositories.AlunoRepository;
 import com.biolab.plataformadecursos.repositories.CursoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,7 +26,7 @@ public class AlunoService {
 
 
 
-    //  criar aluno
+    //  POST
     public String criarAluno(AlunoRequest request) {
         Aluno aluno = new Aluno();
         aluno.setNome(request.getNome());
@@ -34,17 +36,26 @@ public class AlunoService {
         return "Aluno Cadastrado com Sucesso!";
     }
 
-    //  mostrar aluno
-    public AlunoResponse buscarAlunoId(long id) {
-        Aluno aluno = alunoRepository.findById(id).orElseThrow();
-        AlunoResponse response = new AlunoResponse();
-        response.setId(aluno.getId());
-        response.setNome(aluno.getNome());
-        return response;
+    //  GET
+
+    public List<AlunoResponse> mostrarAlunos(){
+        return alunoRepository.findAll().stream().map(
+                aluno -> new AlunoResponse(
+                        aluno.getId(), aluno.getNome(), aluno.getEmail())).toList();
+    }
+
+    public AlunoResponse buscarID(long id){
+        Optional<Aluno> aluno = alunoRepository.findById(id);
+        AlunoResponse alunoResponse = new AlunoResponse();
+        alunoResponse.setId(aluno.get().getId());
+        alunoResponse.setNome(aluno.get().getNome());
+        alunoResponse.setEmail(aluno.get().getEmail());
+
+        return alunoResponse;
     }
 
 
-    //  editar aluno
+    //  PUT
     public String alterarAluno(long id, AlunoRequest request) {
         Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Erro: Aluno não foi encontrado no sistema!"));
         Curso curso = cursoRepository.getReferenceById(request.getIdCurso());
@@ -58,7 +69,7 @@ public class AlunoService {
     }
 
 
-    //  remover aluno
+    //  DELETE
     public String deletarAluno(long id) {
         Optional<Aluno> aluno = alunoRepository.findById(id);
 
